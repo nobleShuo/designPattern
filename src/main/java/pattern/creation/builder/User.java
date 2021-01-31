@@ -4,6 +4,7 @@ import lombok.Data;
 
 /**
  * 建造者模式链式调用
+ *
  * @author QiShuo
  * @version 1.0
  * @create 2019/2/15 10:37 AM
@@ -22,6 +23,9 @@ public class User {
         this.age = age;
     }
 
+    public User() {
+    }
+
     public static UserBuilder builder() {
         return new UserBuilder();
     }
@@ -37,46 +41,31 @@ public class User {
     }
 
     public static class UserBuilder {
-        private String userName;
-        private String password;
-        private String nickName;
-        private int age;
-
-        private UserBuilder() {
-        }
+        private final User user = new User();
 
         public UserBuilder userName(String userName) {
-            this.userName = userName;
+            user.setUserName(userName);
             return this;
         }
 
         public UserBuilder password(String password) {
-            this.password = password;
+            user.setPassword(password);
             return this;
         }
 
         public UserBuilder nickName(String nickName) {
-            this.nickName = nickName;
+            user.setNickName(nickName);
             return this;
         }
 
         public UserBuilder age(int age) {
-            this.age = age;
+            user.setAge(age);
             return this;
         }
 
         public User build() {
-            if (this.userName == null || this.password == null) {
-                throw new RuntimeException("用户名或密码必填");
-            }
-            if (this.age <= 0 || this.age >= 150) {
-                throw new RuntimeException("年龄不合法");
-            }
-            // 还可以做赋予”默认值“的功能
-            if (this.nickName == null) {
-                this.nickName = this.userName;
-            }
-            return new User(userName, password, nickName, age);
+            return user;
         }
     }
+
 }
